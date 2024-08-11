@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a simple, in-memory implementation of a Football World Cup Score Board. It allows tracking live football scores for ongoing games, with the ability to start games, update scores, finish games, and retrieve a summary of all ongoing games sorted by total score and start time. The solution is designed with simplicity, adherence to SOLID principles, and test-driven development (TDD) in mind.
+This project is a **SIMPLE**, in-memory implementation of a Football World Cup Score Board. It allows tracking live football scores for ongoing games, with the ability to start games, update scores, finish games, and retrieve a summary of all ongoing games sorted by total score and start time. The solution is designed with simplicity, adherence to SOLID principles, and test-driven development (TDD) in mind.
 
 ## Features
 
@@ -122,3 +122,6 @@ This simple Football World Cup Score Board implementation is designed to be easy
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## PS
+This is a **SIMPLE** implementation; it is not extremely flexible. Each aspect of the implementation raises questions and leaves room to say that the implementation doesn't allow for certain things. Since the task is too abstract and allows for too much, I intentionally made this implementation so that these questions can be discussed.
