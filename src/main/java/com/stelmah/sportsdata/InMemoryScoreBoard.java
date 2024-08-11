@@ -60,7 +60,13 @@ public class InMemoryScoreBoard implements ScoreBoard {
                 .findFirst()
                 .orElseThrow(() -> new ScoreBoardException("Game not found"));
 
-        activeGame.setScore(homeScore, awayScore);
+        gameLock.lock();
+        try {
+            activeGame.setScore(homeScore, awayScore);
+        } finally {
+            gameLock.unlock();
+        }
+
     }
 
     public List<GameSummary> getGameSummary() {
