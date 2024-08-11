@@ -4,6 +4,7 @@ import com.stelmah.sportsdata.exception.ScoreBoardException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -36,10 +37,7 @@ public class InMemoryScoreBoard implements ScoreBoard {
 
         gameLock.lock();
         try {
-            Game activeGame = games.stream()
-                    .filter(game -> game.getHomeTeam().equals(homeTeam))
-                    .filter(game -> game.getAwayTeam().equals(awayTeam))
-                    .findFirst()
+            Game activeGame = findGame(homeTeam, awayTeam)
                     .orElseThrow(() -> new ScoreBoardException("Game not found"));
 
             games.remove(activeGame);
@@ -54,10 +52,7 @@ public class InMemoryScoreBoard implements ScoreBoard {
         validateScore(homeScore);
         validateScore(awayScore);
 
-        Game activeGame = games.stream()
-                .filter(game -> game.getHomeTeam().equals(homeTeam))
-                .filter(game -> game.getAwayTeam().equals(awayTeam))
-                .findFirst()
+        Game activeGame = findGame(homeTeam, awayTeam)
                 .orElseThrow(() -> new ScoreBoardException("Game not found"));
 
         gameLock.lock();
@@ -82,13 +77,20 @@ public class InMemoryScoreBoard implements ScoreBoard {
      * that the game has already started.
      */
     private void validateIfGameAlreadyStarted(Team homeTeam, Team awayTeam) {
-       games.stream()
-               .filter(game -> game.getHomeTeam().equals(homeTeam))
-               .filter(game -> game.getAwayTeam().equals(awayTeam))
-               .findFirst()
-               .ifPresent((game) -> {
-                   throw new ScoreBoardException("Game already started");
-               });
+        findGame(homeTeam, awayTeam)
+                .ifPresent((game) -> {
+                    throw new ScoreBoardException("Game already started");
+                });
+    }
+
+    /**
+     * Finds a game between the specified home and away teams.
+     */
+    private Optional<Game> findGame(Team homeTeam, Team awayTeam) {
+        return games.stream()
+                .filter(game -> game.getHomeTeam().equals(homeTeam))
+                .filter(game -> game.getAwayTeam().equals(awayTeam))
+                .findFirst();
     }
 
     /**
